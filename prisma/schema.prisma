@@ -14,13 +14,13 @@ model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
-  Cart  Cart[]
+  cart  Cart[]
 }
 
 model Cart {
   id     Int        @id @default(autoincrement())
   userId Int
-  User   User       @relation(fields: [userId], references: [id])
+  user   User       @relation(fields: [userId], references: [id])
   items  CartItem[]
 }
 
@@ -39,7 +39,7 @@ model Item {
   price       Int
   description String?
   category    CATEGORY
-  CartItem    CartItem[]
+  cartItems   CartItem[]
 }
 
 enum CATEGORY {
