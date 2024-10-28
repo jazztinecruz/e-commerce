@@ -1,6 +1,6 @@
 Hi!
 
-This is an e-commerce App made with latest technologies including:
+This is a responsive and full-typed e-commerce app made with latest technologies including:
 
 Front End:
 - Next.js
