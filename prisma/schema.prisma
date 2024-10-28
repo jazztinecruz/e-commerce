@@ -14,4 +14,38 @@ model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
+  Cart  Cart[]
+}
+
+model Cart {
+  id     Int        @id @default(autoincrement())
+  userId Int
+  User   User       @relation(fields: [userId], references: [id])
+  items  CartItem[]
+}
+
+model CartItem {
+  id       Int  @id @default(autoincrement())
+  cartId   Int
+  cart     Cart @relation(fields: [cartId], references: [id])
+  itemId   Int
+  item     Item @relation(fields: [itemId], references: [id])
+  quantity Int
+}
+
+model Item {
+  id          Int        @id @default(autoincrement())
+  name        String
+  price       Int
+  description String?
+  category    CATEGORY
+  CartItem    CartItem[]
+}
+
+enum CATEGORY {
+  CLOTHING
+  SKINCARE
+  MAKEUP
+  SHOES
+  BOOKS
 }
