@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <NextUINavbar isBordered>
       <NavbarBrand>
-        <h1 className="font-bold text-2xl">E-Commerce</h1>
+        <h1 className="font-bold text-xl">E-Commerce</h1>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>Shop</NavbarItem>
