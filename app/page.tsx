@@ -3,6 +3,7 @@ import { auth, signIn, signOut } from "@/auth";
 const HomePage = async () => {
   const session = await auth();
 
+  console.log(session);
   if (session) {
     return (
       <form
