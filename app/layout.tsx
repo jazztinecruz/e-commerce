@@ -32,7 +32,7 @@ const RootLayout = ({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="grid grid-rows-[auto,1fr] gap-6">
           <Navbar />
-          <main className="w-full max-w-5xl mx-auto">
+          <main className="w-full max-w-5xl mx-auto px-6 lg:px-0">
             <Providers>
               {children}
               <Toaster position="top-right" reverseOrder={false} />
