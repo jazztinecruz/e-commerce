@@ -1,4 +1,4 @@
-import Items from "./components/items";
+import Items from "./_components/items";
 
 const HomePage = async () => {
   return (
