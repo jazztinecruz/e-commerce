@@ -28,9 +28,9 @@ const RootLayout = ({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="grid grid-rows-[auto,1fr] gap-4">
+        <div className="grid grid-rows-[auto,1fr] gap-6">
           <Navbar />
-          <main>{children}</main>
+          <main className="w-full max-w-5xl mx-auto">{children}</main>
         </div>
       </body>
     </html>
