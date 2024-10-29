@@ -6,6 +6,8 @@ import {
   Link,
 } from "@nextui-org/react";
 import User from "../user";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { CATEGORY } from "@prisma/client";
 
 const Navbar = () => {
   return (
@@ -13,16 +15,17 @@ const Navbar = () => {
       <NavbarBrand>
         <h1 className="font-bold text-xl">E-Commerce</h1>
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex flex-1 gap-4" justify="center">
-        <NavbarItem>Shop</NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
-          </Link>
-        </NavbarItem>
+      <NavbarContent className="hidden sm:flex flex-1 gap-4" justify="end">
+        <ul className="flex items-center gap-4">
+          {links.map((link) => (
+            <NavbarItem key={link.href}>
+              <Link href={link.href}>{link.text}</Link>
+            </NavbarItem>
+          ))}{" "}
+        </ul>
         <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
+          <Link color="foreground" href="/cart">
+            <ShoppingCartIcon className="size-6" />
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -36,3 +39,14 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const links = [
+  {
+    href: `/?category=${CATEGORY.CLOTHING}`,
+    text: "Shop",
+  },
+  {
+    href: "#",
+    text: "Wishlist",
+  },
+];
