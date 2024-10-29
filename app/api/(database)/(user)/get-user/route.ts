@@ -3,12 +3,12 @@ import { prisma } from "@/prisma";
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
-  const id = String(searchParams.get("id"));
+  const email = String(searchParams.get("email"));
 
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id,
+        email,
       },
       include: {
         cart: {

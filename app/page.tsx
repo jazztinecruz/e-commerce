@@ -1,19 +1,18 @@
-import { auth, signIn, signOut } from "@/auth";
+import { signIn, signOut } from "@/auth";
+import api from "@/core/api";
 
 const HomePage = async () => {
-  const session = await auth();
+  const user = await api.get.user();
 
-  console.log(session);
-  if (session) {
+  if (user) {
     return (
       <form
         action={async () => {
           "use server";
           await signOut();
         }}>
-        <h1>User</h1>
-        <p>{session.user?.email}</p>
-        <p>{session.user?.name}</p>
+        <p>{user.email}</p>
+        <p>{user.name}</p>
         <button type="submit">Sign Out</button>
       </form>
     );
