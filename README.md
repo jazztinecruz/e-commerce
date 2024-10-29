@@ -8,6 +8,7 @@ Front End:
 - Typescript
 - Tailwind CSS
 - Auth.js V5
+- Tanstack React Query
 - Zod
 
 Back End:
