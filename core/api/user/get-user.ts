@@ -1,5 +1,11 @@
 import { auth } from "@/auth";
-import { User } from "@prisma/client";
+import { Cart, CartItem, User } from "@prisma/client";
+
+type UserResponse = User & {
+  cart: {
+    items: CartItem[];
+  } & Cart[];
+};
 
 const getUser = async () => {
   try {
@@ -8,8 +14,8 @@ const getUser = async () => {
 
     const URL = `${process.env.NEXT_PUBLIC_API_URL}/get-user?email=${session.user?.email}`;
 
-    const user = await fetch(URL).then((res) => res.json());
-    return user as User;
+    const user: UserResponse = await fetch(URL).then((res) => res.json());
+    return user;
   } catch (error) {
     console.error(error);
   }
