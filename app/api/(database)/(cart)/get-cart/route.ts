@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../db-client";
+import { prisma } from "@/prisma";
 
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
   const { userId } = body as { userId: number };
 
   try {
-    const cart = await db.cart.findFirst({
+    const cart = await prisma.cart.findFirst({
       where: {
         userId,
       },

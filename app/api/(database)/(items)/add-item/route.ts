@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../db-client";
 import { Item } from "@prisma/client";
+import { prisma } from "@/prisma";
 
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
   const { data } = body as { data: Item };
 
   try {
-    const newItem = await db.item.create({
+    const newItem = await prisma.item.create({
       data,
     });
 

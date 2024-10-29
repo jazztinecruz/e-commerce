@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import db from "../../db-client";
+import { prisma } from "@/prisma";
 
 export const GET = async () => {
   try {
-    const items = await db.item.findMany({
+    const items = await prisma.item.findMany({
       include: {
         _count: true,
       },

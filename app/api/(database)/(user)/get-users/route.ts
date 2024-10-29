@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
-import db from "../../db-client";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/prisma";
 
 export const GET = async () => {
   try {
-    const users = await db.user.findMany({
+    const users = await prisma.user.findMany({
       include: {
         cart: {
           include: {

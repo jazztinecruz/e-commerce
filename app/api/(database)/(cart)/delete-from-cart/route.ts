@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../db-client";
+import { prisma } from "@/prisma";
 
 export const DELETE = async (req: NextRequest) => {
   const body = await req.json();
   const { id } = body as { id: number };
 
   try {
-    const cartItem = await db.cartItem.delete({
+    const cartItem = await prisma.cartItem.delete({
       where: {
         id,
       },

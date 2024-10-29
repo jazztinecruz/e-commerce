@@ -1,12 +1,32 @@
-import { PrismaClient } from "@prisma/client";
-
-const db = new PrismaClient();
+import { auth, signIn, signOut } from "@/auth";
 
 const HomePage = async () => {
-  const users = await db.user.findMany();
+  const session = await auth();
 
-  console.log({ users });
-  return <div>HomePage</div>;
+  if (session) {
+    return (
+      <form
+        action={async () => {
+          "use server";
+          await signOut();
+        }}>
+        <h1>User</h1>
+        <p>{session.user?.email}</p>
+        <p>{session.user?.name}</p>
+        <button type="submit">Sign Out</button>
+      </form>
+    );
+  }
+
+  return (
+    <form
+      action={async () => {
+        "use server";
+        await signIn("google");
+      }}>
+      <button type="submit">Signin with Google</button>
+    </form>
+  );
 };
 
 export default HomePage;

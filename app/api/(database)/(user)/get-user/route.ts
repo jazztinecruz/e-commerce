@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../db-client";
+import { prisma } from "@/prisma";
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
-  const id = parseInt(String(searchParams.get("id")));
+  const id = String(searchParams.get("id"));
 
   try {
-    const user = await db.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id,
       },

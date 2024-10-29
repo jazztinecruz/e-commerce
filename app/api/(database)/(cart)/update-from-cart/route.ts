@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../db-client";
 import { CartItem } from "@prisma/client";
+import { prisma } from "@/prisma";
 
 export const PUT = async (req: NextRequest) => {
   const body = await req.json();
   const { data } = body as { data: CartItem };
 
   try {
-    const cartItem = await db.cartItem.update({
+    const cartItem = await prisma.cartItem.update({
       where: {
         id: data.id,
       },
