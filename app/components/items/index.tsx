@@ -1,37 +1,40 @@
+"use client";
+
 import api from "@/core/api";
-import { CATEGORY } from "@prisma/client";
 import ItemCard from "./card";
+import Categories from "./categories";
+import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
-const Items = async () => {
-  const items = await api.get.item.multiple();
-  const user = await api.get.user();
-  const categories = Object.values(CATEGORY);
+const Items = () => {
+  const category = useSearchParams().get("category");
+  const { data: items, isLoading } = useQuery({
+    queryKey: ["items", category],
+    queryFn: async () => await api.get.item.multiple(String(category)),
+  });
 
-  if (!items) {
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => await api.get.user(),
+  });
+
+  if (!items || isLoading) {
     return;
   }
 
   return (
     <div className="grid lg:grid-cols-[auto,1fr] gap-6">
-      <div>
-        <ul>
-          {categories.map((category) => (
-            <li key={category} className="capitalize">
-              {category}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <Categories />
       <div className="space-y-4">
         <span className="text-sm text-default-500">
-          {items.length + 1} Items Found
+          {items.length} Items Found
         </span>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
             <ItemCard
               key={item.id}
               item={item}
-              cartId={Number(user?.cart[0].id)}
+              cartId={Number(user?.cart.id)}
             />
           ))}
         </ul>
