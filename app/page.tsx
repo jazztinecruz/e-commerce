@@ -1,5 +1,11 @@
+import Items from "./components/items";
+
 const HomePage = async () => {
-  return <div>Home Page</div>;
+  return (
+    <div>
+      <Items />
+    </div>
+  );
 };
 
 export default HomePage;
