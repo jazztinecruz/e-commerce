@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/core/components/navbar";
+import Providers from "@/core/providers";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,7 +32,12 @@ const RootLayout = ({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="grid grid-rows-[auto,1fr] gap-6">
           <Navbar />
-          <main className="w-full max-w-5xl mx-auto">{children}</main>
+          <main className="w-full max-w-5xl mx-auto">
+            <Providers>
+              {children}
+              <Toaster position="top-right" reverseOrder={false} />
+            </Providers>
+          </main>
         </div>
       </body>
     </html>
