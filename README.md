@@ -7,6 +7,7 @@ Front End:
 - React.js
 - Typescript
 - Tailwind CSS
+- Auth.js V5
 - Zod
 
 Back End:
