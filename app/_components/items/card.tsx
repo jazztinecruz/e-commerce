@@ -1,13 +1,14 @@
 "use client";
 
 import { Item } from "@prisma/client";
-import { Card, CardFooter } from "@nextui-org/react";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { Button, Card, CardFooter, Tooltip } from "@nextui-org/react";
+import { HeartIcon } from "@heroicons/react/24/outline";
 import { useMutation } from "@tanstack/react-query";
 import api from "@/core/api";
 import { CartItem } from "@/core/api/items/add-item-to-cart";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 type Props = {
   item: Item;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 const ItemCard = ({ item, cartId }: Props) => {
+  const [isAdding, setIsAdding] = useState(false);
   const { mutate } = useMutation({
     mutationFn: (data: CartItem) => api.mutation.addItemToCart(data),
   });
@@ -24,12 +26,13 @@ const ItemCard = ({ item, cartId }: Props) => {
   const handleAddToCart = () => {
     mutate(
       {
-        cartId,
+        cartId: 1,
         itemId: item.id,
         quantity: 1,
       },
       {
         onSuccess: () => {
+          setIsAdding(true);
           router.refresh();
           toast.success("Item added to your Cart!");
         },
@@ -41,8 +44,19 @@ const ItemCard = ({ item, cartId }: Props) => {
     );
   };
 
+  useEffect(() => {
+    const second = setTimeout(() => {
+      setIsAdding(false);
+    }, 2000);
+
+    return () => {
+      second;
+    };
+  }, [handleAddToCart]);
+
   return (
     <Card
+      as="li"
       shadow="sm"
       key={item.id}
       isPressable
@@ -55,11 +69,13 @@ const ItemCard = ({ item, cartId }: Props) => {
           </p>
         </div>
         <p className="text-default-500">{item.description}</p>
-        <div className="flex items-end w-full">
-          <PlusCircleIcon
-            onClick={handleAddToCart}
-            className="size-6 hover:fill-foreground-500"
-          />
+        <div className="flex items-center gap-2 w-full">
+          <Button onClick={handleAddToCart}>
+            {isAdding ? "Added to Cart" : "Add to Cart"}
+          </Button>
+          <Tooltip content="Add to Wishlist">
+            <HeartIcon className="size-6" />
+          </Tooltip>
         </div>
       </CardFooter>
     </Card>
