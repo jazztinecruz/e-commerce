@@ -21,7 +21,7 @@ const GetItems = () => {
   });
 
   if (!items || isLoading) {
-    return;
+    return <div>Loading...</div>;
   }
 
   return (
