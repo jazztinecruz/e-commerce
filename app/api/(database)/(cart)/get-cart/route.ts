@@ -3,7 +3,7 @@ import { prisma } from "@/prisma";
 
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
-  const { userId } = body as { userId: number };
+  const { userId } = body as { userId: string };
 
   try {
     const cart = await prisma.cart.findFirst({

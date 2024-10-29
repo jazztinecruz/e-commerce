@@ -5,9 +5,11 @@ import ItemCard from "./card";
 import Categories from "./categories";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 
-const Items = () => {
+const GetItems = () => {
   const category = useSearchParams().get("category");
+
   const { data: items, isLoading } = useQuery({
     queryKey: ["items", category],
     queryFn: async () => await api.get.item.multiple(String(category)),
@@ -40,6 +42,14 @@ const Items = () => {
         </ul>
       </div>
     </div>
+  );
+};
+
+const Items = () => {
+  return (
+    <Suspense>
+      <GetItems />
+    </Suspense>
   );
 };
 
