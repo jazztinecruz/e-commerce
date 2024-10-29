@@ -4,6 +4,7 @@ import api from "@/core/api";
 import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import type { CartItem, Item } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -15,13 +16,18 @@ type Props = {
 
 const CartItem = ({ cartItem, cartId, quantity }: Props) => {
   const [quantityCount, setQuantityCount] = useState(quantity);
+  const router = useRouter();
 
-  const { mutate } = useMutation({
+  const { mutate: updateCartItem } = useMutation({
     mutationFn: (data: CartItem) => api.mutation.updateCartItem(data),
   });
 
+  const { mutate: removeCartItem } = useMutation({
+    mutationFn: (id: number) => api.mutation.removeCartItem(id),
+  });
+
   const handleUpdateCartItem = (newCount: number) => {
-    mutate(
+    updateCartItem(
       {
         id: cartItem.id,
         cartId,
@@ -38,6 +44,19 @@ const CartItem = ({ cartItem, cartId, quantity }: Props) => {
         },
       }
     );
+  };
+
+  const handleRemoveCartItem = () => {
+    removeCartItem(cartItem.id, {
+      onSuccess: () => {
+        router.refresh();
+        toast.success("Item removed from Cart!");
+      },
+      onError: (error) => {
+        console.error(error);
+        toast.error("Failed to remove item from Cart!");
+      },
+    });
   };
 
   const handleIncrease = () => {
@@ -80,7 +99,9 @@ const CartItem = ({ cartItem, cartId, quantity }: Props) => {
         <p className="text-lg font-semibold text-gray-900">
           PHP {cartItem.price.toFixed(2)}
         </p>
-        <button className="flex items-center text-sm text-red-500 mt-1">
+        <button
+          onClick={handleRemoveCartItem}
+          className="flex items-center text-sm text-red-500 mt-1">
           <TrashIcon className="w-4 h-4 mr-1" />
           Remove
         </button>

@@ -5,6 +5,7 @@ import getItemsByCategory from "./items/get-items-by-category";
 import getCartItems from "./cart/get-cart-items";
 import updateCartItem from "./cart/update-cart-item";
 import type { CartItem as PrismaCartItem } from "@prisma/client";
+import removeCartItem from "./cart/remove-cart-item";
 
 const api = {
   get: {
@@ -20,6 +21,7 @@ const api = {
   mutation: {
     addItemToCart: (data: CartItem) => addItemToCart(data),
     updateCartItem: (data: PrismaCartItem) => updateCartItem(data),
+    removeCartItem: (id: number) => removeCartItem(id),
   },
 };
 
