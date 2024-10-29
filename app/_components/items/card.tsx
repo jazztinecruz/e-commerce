@@ -8,7 +8,7 @@ import api from "@/core/api";
 import { CartItem } from "@/core/api/items/add-item-to-cart";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Props = {
   item: Item;
@@ -23,7 +23,7 @@ const ItemCard = ({ item, cartId }: Props) => {
 
   const router = useRouter();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = useCallback(() => {
     mutate(
       {
         cartId: 1,
@@ -42,7 +42,7 @@ const ItemCard = ({ item, cartId }: Props) => {
         },
       }
     );
-  };
+  }, [item.id, mutate, router]);
 
   useEffect(() => {
     const second = setTimeout(() => {
@@ -50,7 +50,7 @@ const ItemCard = ({ item, cartId }: Props) => {
     }, 2000);
 
     return () => {
-      second;
+      clearTimeout(second);
     };
   }, [handleAddToCart]);
 
