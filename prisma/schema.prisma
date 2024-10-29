@@ -18,7 +18,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  cart          Cart[]
+  cart          Cart?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
@@ -83,7 +83,7 @@ model Authenticator {
 
 model Cart {
   id     Int        @id @default(autoincrement())
-  userId String
+  userId String     @unique
   user   User       @relation(fields: [userId], references: [id])
   items  CartItem[]
 }
