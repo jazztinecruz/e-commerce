@@ -15,7 +15,7 @@ type Props = {
   cartId: number;
 };
 
-const ItemCard = ({ item, cartId }: Props) => {
+const ItemCard = ({ item }: Props) => {
   const [isAdding, setIsAdding] = useState(false);
   const { mutate } = useMutation({
     mutationFn: (data: CartItem) => api.mutation.addItemToCart(data),
