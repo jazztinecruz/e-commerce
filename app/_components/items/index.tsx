@@ -20,6 +20,7 @@ const GetItems = () => {
     queryFn: async () => await api.get.user(),
   });
 
+  console.log(items);
   if (!items || isLoading) {
     return <div>Loading...</div>;
   }
