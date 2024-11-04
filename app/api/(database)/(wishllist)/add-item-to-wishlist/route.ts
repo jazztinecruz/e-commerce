@@ -15,7 +15,6 @@ export const POST = async (req: NextRequest) => {
       data,
       include: {
         user: true,
-        item: true,
       },
     });
 
