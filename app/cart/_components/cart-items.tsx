@@ -1,10 +1,11 @@
 "use client";
 
-import { Button, Checkbox } from "@nextui-org/react";
+import { Checkbox } from "@nextui-org/react";
 import CartItem from "./cart-item";
 import type api from "@/core/api";
 import { ChangeEvent, useState } from "react";
 import { ExtendedCartItem } from "@/core/types/item";
+import Checkout from "./checkout";
 
 type Props = {
   cartItems: Awaited<ReturnType<typeof api.get.cart.items>>;
@@ -57,6 +58,7 @@ const CartItems = ({ cartItems }: Props) => {
                 onChange={() => handleSelect(cartItem)}
               />
               <CartItem
+                cartItemId={cartItem.id}
                 cartItem={cartItem.item}
                 cartId={Number(cartItems.id)}
                 quantity={cartItem.quantity}
@@ -66,34 +68,7 @@ const CartItems = ({ cartItems }: Props) => {
         </ul>
       </div>
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold">Order Summary</h2>
-        <ul className="mt-4">
-          {selectedItems.map(({ item, quantity }, index) => (
-            <li key={index} className="flex justify-between py-2">
-              <span>
-                {item.name} x {quantity}
-              </span>
-              <span>${(item.price * quantity).toFixed(2)}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="flex justify-between mt-4 pt-4 border-t">
-          <span className="font-bold ">Total</span>
-          <span className="font-bold text-xl">
-            PHP
-            {selectedItems
-              .reduce(
-                (total, { item, quantity }) => total + item.price * quantity,
-                0
-              )
-              .toFixed(2)}
-          </span>
-        </div>
-        <Button color="primary" className="w-full uppercase font-bold">
-          Checkout
-        </Button>
-      </div>
+      <Checkout selectedItems={selectedItems} />
     </div>
   );
 };

@@ -9,12 +9,13 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 type Props = {
+  cartItemId: number;
   cartItem: Item;
   cartId: number;
   quantity: number;
 };
 
-const CartItem = ({ cartItem, cartId, quantity }: Props) => {
+const CartItem = ({ cartItemId, cartItem, cartId, quantity }: Props) => {
   const [quantityCount, setQuantityCount] = useState(quantity);
   const router = useRouter();
 
@@ -29,7 +30,7 @@ const CartItem = ({ cartItem, cartId, quantity }: Props) => {
   const handleUpdateCartItem = (newCount: number) => {
     updateCartItem(
       {
-        id: cartItem.id,
+        id: cartItemId,
         cartId,
         itemId: cartItem.id,
         quantity: newCount,
@@ -47,7 +48,7 @@ const CartItem = ({ cartItem, cartId, quantity }: Props) => {
   };
 
   const handleRemoveCartItem = () => {
-    removeCartItem(cartItem.id, {
+    removeCartItem(cartItemId, {
       onSuccess: () => {
         router.refresh();
         toast.success("Item removed from Cart!");
