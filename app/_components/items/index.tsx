@@ -25,6 +25,10 @@ const GetItems = () => {
     return <div>Loading...</div>;
   }
 
+  if (items.length === 0) {
+    return <div>No items found</div>;
+  }
+
   return (
     <div className="grid lg:grid-cols-[auto,1fr] gap-6">
       <Categories />
@@ -33,7 +37,7 @@ const GetItems = () => {
           {items.length} Items Found
         </span>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {items.map((item) => (
+          {items?.map((item) => (
             <ItemCard
               key={item.id}
               item={item}
