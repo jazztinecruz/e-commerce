@@ -1,12 +1,12 @@
-import { Item } from "@prisma/client";
+import type { ExtendedWishlist } from "@/core/types/item";
 
-const getWishlistItems = async (wishlistId: number) => {
+const getWishlistItems = async (id: number) => {
   try {
     const URL = `${process.env.NEXT_PUBLIC_API_URL}/get-wishlist`;
 
-    const wishlistItems: Item = await fetch(URL, {
+    const wishlistItems: ExtendedWishlist = await fetch(URL, {
       method: "POST",
-      body: JSON.stringify(wishlistId),
+      body: JSON.stringify({ id }),
     }).then((res) => res.json());
 
     return wishlistItems;

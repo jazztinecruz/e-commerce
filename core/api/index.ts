@@ -19,6 +19,7 @@ const api = {
     cart: {
       items: () => getCartItems(),
     },
+    wishlistItems: (id: number) => getWishlistItems(id),
   },
   mutation: {
     addItemToCart: (data: CartItem) => addItemToCart(data),
@@ -27,7 +28,6 @@ const api = {
     addItemToWishlist: (data: { wishlistId: number; itemId: number }) =>
       addItemToWishlist(data),
     removeWishlistItem: (id: number) => removeCartItem(id),
-    getWishlistItems: (id: number) => getWishlistItems(id),
   },
 };
 
