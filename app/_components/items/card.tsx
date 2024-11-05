@@ -6,26 +6,32 @@ import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { useMutation } from "@tanstack/react-query";
 import api from "@/core/api";
 import { CartItem } from "@/core/api/items/add-item-to-cart";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
-import type { ExtendedItem } from "@/core/types/item";
+import type { ExtendedItem, ExtendedWishlistItem } from "@/core/types/item";
 
 type Props = {
   item: ExtendedItem;
-  cartId: number;
+  cartId?: number;
+  wishlistItemId?: number;
   refetchItems?: () => void;
 };
 
-const ItemCard = ({ item, refetchItems }: Props) => {
+const ItemCard = ({ item, refetchItems, wishlistItemId }: Props) => {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isInWishlistPage = pathname === "/wishlist";
+
+  console.log(isInWishlistPage);
   const [isAdding, setIsAdding] = useState(false);
 
   const { mutate: addToCart } = useMutation({
     mutationFn: (data: CartItem) => api.mutation.addItemToCart(data),
   });
 
-  const hasAlreadyAddedToWishlist = item.wishlistItems.some(
+  const hasAlreadyAddedToWishlist = item.wishlistItems?.some(
     (wishlistItem) => wishlistItem.itemId === item.id
   );
 
@@ -43,6 +49,19 @@ const ItemCard = ({ item, refetchItems }: Props) => {
     onError: (error) => {
       console.error(error);
       toast.error("Failed to add item to Cart.");
+    },
+  });
+
+  const { mutate: removeFromWishList } = useMutation({
+    mutationFn: () => api.mutation.removeWishlistItem(wishlistItemId as number),
+    onSuccess: () => {
+      setIsAdding(true);
+      router.refresh();
+      toast.success("Item removed from your Wishlist!");
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to remove item from Wishlist.");
     },
   });
 
@@ -96,17 +115,22 @@ const ItemCard = ({ item, refetchItems }: Props) => {
           <Button onClick={handleAddToCart}>
             {isAdding ? "Added to Cart" : "Add to Cart"}
           </Button>
-
-          {!hasAlreadyAddedToWishlist ? (
-            <Tooltip content="Add to Wishlist">
-              <button onClick={() => addToWishlist()}>
-                <HeartIcon className="size-6" />
-              </button>
-            </Tooltip>
+          {!isInWishlistPage ? (
+            !hasAlreadyAddedToWishlist ? (
+              <Tooltip content="Add to Wishlist">
+                <button onClick={() => addToWishlist()}>
+                  <HeartIcon className="size-6" />
+                </button>
+              </Tooltip>
+            ) : (
+              <Tooltip content="Added to Wishlist">
+                <HeartSolidIcon className="size-6" fill="red" />
+              </Tooltip>
+            )
           ) : (
-            <Tooltip content="Added to Wishlist">
-              <HeartSolidIcon className="size-6" fill="red" />
-            </Tooltip>
+            <Button variant="ghost" onClick={() => removeFromWishList()}>
+              Remove from Wishlist
+            </Button>
           )}
         </div>
       </CardFooter>
