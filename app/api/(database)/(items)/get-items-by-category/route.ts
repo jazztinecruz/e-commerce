@@ -13,6 +13,10 @@ export const GET = async (req: NextRequest) => {
       where: {
         category,
       },
+      include: {
+        cartItems: true,
+        wishlistItems: true,
+      },
     });
     return NextResponse.json(items, { status: 200 });
   } catch (error) {
