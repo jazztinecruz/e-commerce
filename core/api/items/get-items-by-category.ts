@@ -1,4 +1,5 @@
-import { CATEGORY, Item } from "@prisma/client";
+import { ExtendedItem } from "@/core/types/item";
+import { CATEGORY } from "@prisma/client";
 
 const getItemsByCategory = async (category: string) => {
   try {
@@ -7,7 +8,7 @@ const getItemsByCategory = async (category: string) => {
     }/get-items-by-category?category=${category.toUpperCase() as CATEGORY}`;
 
     const items = await fetch(URL).then((res) => res.json());
-    return items as Item[];
+    return items as ExtendedItem[];
   } catch (error) {
     console.error(error);
   }
