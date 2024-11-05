@@ -11,7 +11,11 @@ export const POST = async (req: NextRequest) => {
         id,
       },
       include: {
-        items: true,
+        items: {
+          include: {
+            item: true,
+          },
+        },
       },
     });
 
