@@ -9,17 +9,19 @@ const Wishlist = async () => {
   }
 
   return (
-    <div>
-      <div className="space-y-4">
-        <span className="text-sm text-default-500">
-          {wishlist?.items.length} Items Found
+    <div className="space-y-4">
+      <h1 className="flex items-center gap-2">
+        <span className="text-2xl font-bold">Wishlist</span>
+        <span className="text-default-foreground">
+          ({wishlist.items.length} Items)
         </span>
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {wishlist?.items?.map((item) => (
-            <ItemCard key={item.id} item={item.item} wishlistItemId={item.id} />
-          ))}
-        </ul>
-      </div>
+      </h1>
+
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {wishlist?.items?.map((item) => (
+          <ItemCard key={item.id} item={item.item} wishlistItemId={item.id} />
+        ))}
+      </ul>
     </div>
   );
 };
