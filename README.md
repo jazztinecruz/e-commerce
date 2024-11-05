@@ -1,6 +1,6 @@
 Hi!
 
-This is a responsive and full-typed e-commerce app where you can
+This is a responsive and full-typed e-commerce app where you can add items to your cart and as well as saving it to your wishlist.
 
 **Features**
 - Sign In through Google Account
