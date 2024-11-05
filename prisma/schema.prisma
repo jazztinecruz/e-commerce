@@ -11,20 +11,21 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String          @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   cart          Cart?
+  wishlist      Wishlist?
+
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  wishlist  Wishlist[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
@@ -99,21 +100,28 @@ model CartItem {
 }
 
 model Item {
-  id          Int        @id @default(autoincrement())
-  name        String
-  price       Int
-  description String?
-  category    CATEGORY
-  cartItems   CartItem[]
-  wishlist    Wishlist[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  price         Int
+  description   String?
+  category      CATEGORY
+  cartItems     CartItem[]
+  wishlistItems WishlistItems[]
 }
 
 model Wishlist {
-  id     Int    @id @default(autoincrement())
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-  itemId Int
-  item   Item   @relation(fields: [itemId], references: [id])
+  id     Int             @id @default(autoincrement())
+  userId String          @unique
+  user   User            @relation(fields: [userId], references: [id])
+  items  WishlistItems[]
+}
+
+model WishlistItems {
+  id         Int      @id @default(autoincrement())
+  wishlistId Int
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+  itemId     Int
+  item       Item     @relation(fields: [itemId], references: [id])
 }
 
 enum CATEGORY {
