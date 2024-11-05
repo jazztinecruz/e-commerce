@@ -1,30 +1,53 @@
 "use client";
 
-import { Item } from "@prisma/client";
 import { Button, Card, CardFooter, Tooltip } from "@nextui-org/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { useMutation } from "@tanstack/react-query";
 import api from "@/core/api";
 import { CartItem } from "@/core/api/items/add-item-to-cart";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
+import type { ExtendedItem } from "@/core/types/item";
 
 type Props = {
-  item: Item;
+  item: ExtendedItem;
   cartId: number;
+  refetchItems?: () => void;
 };
 
-const ItemCard = ({ item }: Props) => {
+const ItemCard = ({ item, refetchItems }: Props) => {
+  const router = useRouter();
   const [isAdding, setIsAdding] = useState(false);
-  const { mutate } = useMutation({
+
+  const { mutate: addToCart } = useMutation({
     mutationFn: (data: CartItem) => api.mutation.addItemToCart(data),
   });
 
-  const router = useRouter();
+  const hasAlreadyAddedToWishlist = item.wishlistItems.some(
+    (wishlistItem) => wishlistItem.itemId === item.id
+  );
+
+  const { mutate: addToWishlist } = useMutation({
+    mutationFn: () =>
+      api.mutation.addItemToWishlist({
+        itemId: item.id,
+        wishlistId: 1,
+      }),
+    onSuccess: () => {
+      setIsAdding(true);
+      refetchItems && refetchItems();
+      toast.success("Item added to your Cart!");
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to add item to Cart.");
+    },
+  });
 
   const handleAddToCart = useCallback(() => {
-    mutate(
+    addToCart(
       {
         cartId: 1,
         itemId: item.id,
@@ -42,7 +65,7 @@ const ItemCard = ({ item }: Props) => {
         },
       }
     );
-  }, [item.id, mutate, router]);
+  }, [item.id, addToCart, router]);
 
   useEffect(() => {
     const second = setTimeout(() => {
@@ -73,9 +96,18 @@ const ItemCard = ({ item }: Props) => {
           <Button onClick={handleAddToCart}>
             {isAdding ? "Added to Cart" : "Add to Cart"}
           </Button>
-          <Tooltip content="Add to Wishlist">
-            <HeartIcon className="size-6" />
-          </Tooltip>
+
+          {!hasAlreadyAddedToWishlist ? (
+            <Tooltip content="Add to Wishlist">
+              <button onClick={() => addToWishlist()}>
+                <HeartIcon className="size-6" />
+              </button>
+            </Tooltip>
+          ) : (
+            <Tooltip content="Added to Wishlist">
+              <HeartSolidIcon className="size-6" fill="red" />
+            </Tooltip>
+          )}
         </div>
       </CardFooter>
     </Card>

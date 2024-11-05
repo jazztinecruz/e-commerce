@@ -10,7 +10,11 @@ import { Suspense } from "react";
 const GetItems = () => {
   const category = useSearchParams().get("category");
 
-  const { data: items, isLoading } = useQuery({
+  const {
+    data: items,
+    isLoading,
+    refetch: refetchItems,
+  } = useQuery({
     queryKey: ["items", category],
     queryFn: async () => await api.get.item.multiple(String(category)),
   });
@@ -20,7 +24,7 @@ const GetItems = () => {
     queryFn: async () => await api.get.user(),
   });
 
-  console.log(items);
+  console.log(user);
   if (!items || isLoading) {
     return <div>Loading...</div>;
   }
@@ -42,6 +46,7 @@ const GetItems = () => {
               key={item.id}
               item={item}
               cartId={Number(user?.cart.id)}
+              refetchItems={refetchItems}
             />
           ))}
         </ul>
