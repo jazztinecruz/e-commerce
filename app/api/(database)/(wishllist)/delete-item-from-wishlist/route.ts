@@ -6,7 +6,7 @@ export const DELETE = async (req: NextRequest) => {
   const { id } = body as { id: number };
 
   try {
-    await prisma.wishlist.delete({
+    await prisma.wishlistItems.delete({
       where: {
         id,
       },
