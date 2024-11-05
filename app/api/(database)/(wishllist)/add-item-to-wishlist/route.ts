@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 
 type BodyRequest = {
-  userId: string;
+  wishlistId: number;
   itemId: number;
 };
 
@@ -11,14 +11,14 @@ export const POST = async (req: NextRequest) => {
   const { data } = body as { data: BodyRequest };
 
   try {
-    const newItem = await prisma.wishlist.create({
-      data,
-      include: {
-        user: true,
+    const newSavedItem = await prisma.wishlistItems.create({
+      data: {
+        wishlistId: data.wishlistId,
+        itemId: data.itemId,
       },
     });
 
-    return NextResponse.json(newItem, { status: 201 });
+    return NextResponse.json(newSavedItem, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(error, { status: 500 });
