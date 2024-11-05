@@ -46,7 +46,7 @@ const links = [
     text: "Shop",
   },
   {
-    href: "#",
+    href: "/wishlist",
     text: "Wishlist",
   },
 ];
