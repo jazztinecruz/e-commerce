@@ -8,6 +8,7 @@ import type { CartItem as PrismaCartItem } from "@prisma/client";
 import removeCartItem from "./cart/remove-cart-item";
 import addItemToWishlist from "./wishlist/add-item-to-wishlist";
 import getWishlistItems from "./wishlist/get-wishlist-items";
+import removeWishlistItem from "./wishlist/remove-wishlist-item";
 
 const api = {
   get: {
@@ -27,7 +28,7 @@ const api = {
     removeCartItem: (id: number) => removeCartItem(id),
     addItemToWishlist: (data: { wishlistId: number; itemId: number }) =>
       addItemToWishlist(data),
-    removeWishlistItem: (id: number) => removeCartItem(id),
+    removeWishlistItem: (id: number) => removeWishlistItem(id),
   },
 };
 
