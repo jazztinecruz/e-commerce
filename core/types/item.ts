@@ -2,8 +2,8 @@ import type { CartItem, Item, WishlistItems } from "@prisma/client";
 
 export type ExtendedCartItem = CartItem & { item: Item };
 export type ExtendedItem = Item & {
-  cartItems: CartItem[];
-  wishlistItems: WishlistItems[];
+  cartItem?: CartItem[];
+  wishlistItems?: WishlistItems[];
 };
 
 export type ExtendedWishlistItem = {
@@ -14,6 +14,6 @@ export type ExtendedWishlistItem = {
 
 export type ExtendedWishlist = {
   id: number;
-  userId: string;
+  userId?: string;
   items: ExtendedWishlistItem[];
 };
