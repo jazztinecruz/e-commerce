@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardFooter, Tooltip } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, Tooltip } from "@nextui-org/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { useMutation } from "@tanstack/react-query";
@@ -9,7 +9,7 @@ import { CartItem } from "@/core/api/items/add-item-to-cart";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
-import type { ExtendedItem, ExtendedWishlistItem } from "@/core/types/item";
+import type { ExtendedItem } from "@/core/types/item";
 
 type Props = {
   item: ExtendedItem;
@@ -24,7 +24,6 @@ const ItemCard = ({ item, refetchItems, wishlistItemId }: Props) => {
 
   const isInWishlistPage = pathname === "/wishlist";
 
-  console.log(isInWishlistPage);
   const [isAdding, setIsAdding] = useState(false);
 
   const { mutate: addToCart } = useMutation({
@@ -43,7 +42,7 @@ const ItemCard = ({ item, refetchItems, wishlistItemId }: Props) => {
       }),
     onSuccess: () => {
       setIsAdding(true);
-      refetchItems && refetchItems();
+      refetchItems?.();
       toast.success("Item added to your Cart!");
     },
     onError: (error) => {
@@ -103,7 +102,7 @@ const ItemCard = ({ item, refetchItems, wishlistItemId }: Props) => {
       key={item.id}
       isPressable
       className="hover:bg-slate-100 transition-colors duration-300 cursor-pointer">
-      <CardFooter className="text-small flex flex-col gap-2 text-left items-start">
+      <CardBody className="space-y-2">
         <div className="flex items-center w-full justify-between">
           <b>{item.name}</b>
           <p className="text-default-500 text-base whitespace-nowrap">
@@ -111,10 +110,13 @@ const ItemCard = ({ item, refetchItems, wishlistItemId }: Props) => {
           </p>
         </div>
         <p className="text-default-500">{item.description}</p>
-        <div className="flex items-center gap-2 w-full">
+      </CardBody>
+      <CardFooter className="text-small text-left items-start">
+        <div className="flex items-center gap-2 w-full mt-auto">
           <Button onClick={handleAddToCart}>
             {isAdding ? "Added to Cart" : "Add to Cart"}
           </Button>
+
           {!isInWishlistPage ? (
             !hasAlreadyAddedToWishlist ? (
               <Tooltip content="Add to Wishlist">
